@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Año de publicación"
-            android:inputType="date"
+            android:inputType="number"
             android:minHeight="48dp" />
 
         <EditText

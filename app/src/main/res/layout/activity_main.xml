@@ -18,12 +18,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SENATI ZONAL ICA - AYACUCHO"
-            android:textSize="20dp"/>
+            android:text="LIBRERIA - EL SENATINO"
+            android:textSize="30dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LIBRERÍA - SENATI"/>
+            android:text="REGISTRO Y CONSULTA DE LIBROS"
+            android:textSize="15dp"/>
+
         <Button
             android:id="@+id/btActivityRegistro"
             android:layout_width="match_parent"
