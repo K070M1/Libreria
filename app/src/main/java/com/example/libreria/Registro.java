@@ -30,9 +30,27 @@ public class Registro extends AppCompatActivity {
         botonRegistrarLibro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                verificarRegister();
+                verificarCasillas();
             }
         });
+    }
+
+    //Verificar si las casillas estan vacias
+    private void verificarCasillas(){
+        //Cambio de valores previos
+        String añopubli = etAñopubli.getText().toString();
+        String paginas = etNpaginas.getText().toString();
+        String precio = etPrecio.getText().toString();
+        String titulo = etTitulo.getText().toString();
+        String autor = etAutor.getText().toString();
+        String editorial = etEditorial.getText().toString();
+        String lugarpublicacion = etLugarpubli.getText().toString();
+
+        if(titulo.trim().isEmpty() || autor.trim().isEmpty() || editorial.trim().isEmpty() || añopubli.isEmpty() || lugarpublicacion.trim().isEmpty() || paginas.isEmpty() || precio.isEmpty()){
+            Toast.makeText(context, "Faltan completar algunas casillas", Toast.LENGTH_SHORT).show();
+        }else{
+            verificarRegister();
+        }
     }
 
     //Verificar si quiere registrar
@@ -59,6 +77,7 @@ public class Registro extends AppCompatActivity {
 
     //Registrar nuevo libro
     private void registerData(){
+        //Valores a enviar
         String  titulo = etTitulo.getText().toString();
         String  autor = etAutor.getText().toString();
         String  editorial = etEditorial.getText().toString();
@@ -70,6 +89,8 @@ public class Registro extends AppCompatActivity {
         accesso.agregarLibro(titulo, autor, editorial, añopublicacion, lugarpublicacion, npaginas, precio);
         Toast.makeText(context, "Registrado correctamente", Toast.LENGTH_LONG).show();
         resetUI();
+
+
     }
 
     private void resetUI(){

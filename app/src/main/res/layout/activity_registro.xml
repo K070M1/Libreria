@@ -53,6 +53,7 @@
             android:ems="10"
             android:inputType="number"
             android:minHeight="48dp"
+            android:maxLength="4"
             android:hint="Año de publicación"/>
 
         <EditText
@@ -69,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
             android:minHeight="48dp"
             android:hint="Número de páginas"/>
 
@@ -78,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:minHeight="48dp"
             android:hint="Precio"/>
         <Button

@@ -46,11 +46,31 @@ public class Busqueda extends AppCompatActivity {
         botonActualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                verificarActualizar();
+                verificarCasillas();
             }
         });
 
     }
+
+    //Verificar si las casillas estan vacias
+    private void verificarCasillas(){
+        //Cambio de valores previos
+        String IDB = etIDBuscado.getText().toString();
+        String añopubli = etAñopubli.getText().toString();
+        String paginas = etNpaginas.getText().toString();
+        String precio = etPrecio.getText().toString();
+        String titulo = etTitulo.getText().toString();
+        String autor = etAutor.getText().toString();
+        String editorial = etEditorial.getText().toString();
+        String lugarpublicacion = etLugarpubli.getText().toString();
+
+        if(IDB.isEmpty() || titulo.trim().isEmpty() || autor.trim().isEmpty() || editorial.trim().isEmpty() || añopubli.isEmpty() || lugarpublicacion.trim().isEmpty() || paginas.isEmpty() || precio.isEmpty()){
+            Toast.makeText(context, "Faltan completar algunas casillas", Toast.LENGTH_SHORT).show();
+        }else{
+            verificarActualizar();
+        }
+    }
+
     //Metodo para comprobar si quiere modificar
     private void verificarActualizar(){
         AlertDialog.Builder dialogo = new AlertDialog.Builder(context);
@@ -99,22 +119,28 @@ public class Busqueda extends AppCompatActivity {
     private void verificarEliminar(){
         AlertDialog.Builder dialogo = new AlertDialog.Builder(context);
 
-        dialogo.setTitle("Libreria SENATI")
-            .setMessage("¿Estas seguro de eliminar este registro?")
-            .setCancelable(false)
-            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    eliminarRegistro();
-                }
-            })
-            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Toast.makeText(context, "Operación cancelada", Toast.LENGTH_SHORT).show();
-                }
-            });
-        dialogo.show();
+        String IDB =  etIDBuscado.getText().toString();
+
+        if(IDB.isEmpty()){
+            Toast.makeText(context, "No hay un registro asignado para eliminar", Toast.LENGTH_LONG).show();
+        }else{
+            dialogo.setTitle("Libreria SENATI")
+                    .setMessage("¿Estas seguro de eliminar este registro?")
+                    .setCancelable(false)
+                    .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            eliminarRegistro();
+                        }
+                    })
+                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(context, "Operación cancelada", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            dialogo.show();
+        }
     }
 
     //Metodo para eliminar el registro
@@ -137,29 +163,38 @@ public class Busqueda extends AppCompatActivity {
 
         SQLiteDatabase db = access.getReadableDatabase();
 
-        String[] paramConsult = { etIDBuscado.getText().toString() };
+        String IdBuscado = etIDBuscado.getText().toString();
+
+        String[] paramConsult = { IdBuscado };
 
         String[] campObtn = {"titulo", "autor" , "editorial", "añopublicacion", "lugarpublicacion", "npaginas", "precio"};
 
-        try {
-            Cursor cursor = db.query("libros", campObtn, "idlibro=?", paramConsult, null,null,null);
-            if(cursor.moveToFirst()){
-                etTitulo.setText(cursor.getString(0));
-                etAutor.setText(cursor.getString(1));
-                etEditorial.setText(cursor.getString(2));
-                etAñopubli.setText(cursor.getString(3));
-                etLugarpubli.setText(cursor.getString(4));
-                etNpaginas.setText(cursor.getString(5));
-                etPrecio.setText(cursor.getString(6));
-            }else{
-                Toast.makeText(context,"No se encontró el registro buscado", Toast.LENGTH_LONG).show();
-                resetUI();
+        if(IdBuscado.isEmpty()){
+            Toast.makeText(context, "Debe colocar un valor a buscar", Toast.LENGTH_LONG).show();
+            resetUI();
+        }else{
+            try {
+                Cursor cursor = db.query("libros", campObtn, "idlibro=?", paramConsult, null,null,null);
+                if(cursor.moveToFirst()){
+                    etTitulo.setText(cursor.getString(0));
+                    etAutor.setText(cursor.getString(1));
+                    etEditorial.setText(cursor.getString(2));
+                    etAñopubli.setText(cursor.getString(3));
+                    etLugarpubli.setText(cursor.getString(4));
+                    etNpaginas.setText(cursor.getString(5));
+                    etPrecio.setText(cursor.getString(6));
+                }else{
+                    Toast.makeText(context,"No se encontró el registro buscado", Toast.LENGTH_LONG).show();
+                    resetUI();
+                }
+                cursor.close();
             }
-            cursor.close();
+            catch (Exception error){
+                Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
+            }
         }
-        catch (Exception error){
-            Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
-        }
+
+
 
     }
 
